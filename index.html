@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mo'men & Amal </title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    background: #fff;
+}
+
+.invitation {
+    position: relative;
+    width: 100%;
+    max-width: 1366px;
+    aspect-ratio: 1366 / 2604;
+    margin: 0 auto;
+    overflow: hidden;
+
+    background-image: url("background.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+/* GIF elements */
+
+.gif {
+    position: absolute;
+    width: 51.0835%;
+    height: 22.8917%;
+    object-fit: fill;
+    pointer-events: none;
+}
+
+/* GIF 1 */
+.gif-1 {
+    left: 0;
+    top: 0;
+}
+
+/* GIF 2 */
+.gif-2 {
+    left: 59.202%;
+    top: 53.412%;
+}
+
+/* GIF 3 */
+.gif-3 {
+    left: -18.887%;
+    top: 80.169%;
+}
+
+/* Hidden redirect button */
+
+.redirect-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5%;
+    opacity: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 10;
+}
+</style>
+</head>
+
+<body>
+
+<main class="invitation">
+
+    <!-- GIF 1 -->
+    <img src="animation.gif" class="gif gif-1" alt="">
+
+    <!-- GIF 2 -->
+    <img src="animation.gif" class="gif gif-2" alt="">
+
+    <!-- GIF 3 -->
+    <img src="animation.gif" class="gif gif-3" alt="">
+
+    <!-- Hidden redirect button -->
+    <button
+        class="redirect-button"
+        id="redirectButton"
+        aria-label="Continue">
+    </button>
+
+</main>
+
+<audio id="backgroundMusic" src="song.mp3" preload="auto" loop></audio>
+
+<script>
+const music = document.getElementById("backgroundMusic");
+const redirectButton = document.getElementById("redirectButton");
+
+let musicStarted = false;
+
+// Start music on first user interaction
+function startMusic() {
+    if (musicStarted) return;
+
+    musicStarted = true;
+
+    music.play().catch(error => {
+        musicStarted = false;
+        console.log("Music playback requires another interaction.");
+    });
+
+    removeMusicListeners();
+}
+
+function removeMusicListeners() {
+    document.removeEventListener("click", startMusic);
+    document.removeEventListener("touchstart", startMusic);
+    document.removeEventListener("keydown", startMusic);
+    document.removeEventListener("pointerdown", startMusic);
+}
+
+// Listen for any first interaction
+document.addEventListener("click", startMusic);
+document.addEventListener("touchstart", startMusic);
+document.addEventListener("keydown", startMusic);
+document.addEventListener("pointerdown", startMusic);
+
+// Redirect on hidden button click
+redirectButton.addEventListener("click", function() {
+    window.open(
+        "https://zekra.link/momen-amal",
+        "_blank",
+        "noopener,noreferrer"
+    );
+});
+</script>
+
+</body>
+</html>
