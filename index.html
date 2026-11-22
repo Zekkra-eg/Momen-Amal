@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mo'men & Amal </title>
+<title>Mo'men & Amal</title>
 
 <style>
 * {
@@ -100,58 +100,84 @@ html, body {
 
 </main>
 
-<audio id="backgroundMusic" src="song.mp3" preload="auto" loop></audio>
-
+<!-- Background Music -->
+<audio
+    id="backgroundMusic"
+    src="song.mp3"
+    preload="auto"
+    loop
+    playsinline>
+</audio>
 
 <script>
+
 const music = document.getElementById("backgroundMusic");
 const redirectButton = document.getElementById("redirectButton");
 
 let musicStarted = false;
+let isStarting = false;
 
-// Start music on first user interaction
-function startMusic() {
-    if (musicStarted) return;
+// Start music after first user interaction
+async function startMusic() {
 
-    musicStarted = true;
+    if (musicStarted || isStarting) return;
 
-    music.play().catch(error => {
-        musicStarted = false;
-        console.log("Music playback requires another interaction.");
-    });
+    isStarting = true;
 
-    removeMusicListeners();
+    try {
+
+        await music.play();
+
+        // Mark music as started only after success
+        musicStarted = true;
+
+        // Remove listeners after successful playback
+        removeMusicListeners();
+
+        console.log("Music started successfully.");
+
+    } catch (error) {
+
+        // Keep listeners active to retry
+        console.log(
+            "Music playback failed. Waiting for another interaction.",
+            error
+        );
+
+    } finally {
+
+        isStarting = false;
+
+    }
 }
 
-// Replay music when it ends
-music.addEventListener("ended", function() {
-    music.currentTime = 0;
-    music.play().catch(error => {
-        console.log("Could not replay music.");
-    });
-});
-
+// Remove all music listeners
 function removeMusicListeners() {
+
     document.removeEventListener("click", startMusic);
     document.removeEventListener("touchstart", startMusic);
-    document.removeEventListener("keydown", startMusic);
     document.removeEventListener("pointerdown", startMusic);
+    document.removeEventListener("keydown", startMusic);
+
 }
 
-// Listen for any first interaction
+// Listen for user interactions
 document.addEventListener("click", startMusic);
 document.addEventListener("touchstart", startMusic);
-document.addEventListener("keydown", startMusic);
 document.addEventListener("pointerdown", startMusic);
+document.addEventListener("keydown", startMusic);
 
 // Redirect on hidden button click
 redirectButton.addEventListener("click", function() {
+
     window.open(
         "https://zekra.link/momen-amal",
         "_blank",
         "noopener,noreferrer"
     );
+
 });
+
 </script>
 
 </body>
