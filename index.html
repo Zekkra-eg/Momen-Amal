@@ -102,6 +102,7 @@ html, body {
 
 <audio id="backgroundMusic" src="song.mp3" preload="auto" loop></audio>
 
+
 <script>
 const music = document.getElementById("backgroundMusic");
 const redirectButton = document.getElementById("redirectButton");
@@ -121,6 +122,14 @@ function startMusic() {
 
     removeMusicListeners();
 }
+
+// Replay music when it ends
+music.addEventListener("ended", function() {
+    music.currentTime = 0;
+    music.play().catch(error => {
+        console.log("Could not replay music.");
+    });
+});
 
 function removeMusicListeners() {
     document.removeEventListener("click", startMusic);
